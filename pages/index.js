@@ -53,6 +53,9 @@ function Home({ address }) {
         <title>Retrocade Earnings Checker</title>
         <meta name="description" content="Check how much BUSD you've earned by holding RC tokens" />
         <link rel="icon" href="/favicon.svg" />
+        <meta property="og:image" content="https://user-images.githubusercontent.com/16388408/138349218-4c25a8dd-55f2-4d5e-98dc-1804c3a96de3.png"/>
+        <meta property="og:title" content="Retrocade Earnings Checker"/>
+        <meta property="og:description" content="Check how much BUSD you've earned by holding RC tokens"/>
       </Head>
 
       <header className={styles.header}>

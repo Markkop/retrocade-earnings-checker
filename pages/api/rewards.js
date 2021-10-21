@@ -3,6 +3,10 @@
 import { gql } from "@apollo/client";
 import client from "../../apollo-client";
 
+function sortByDate(a, b) {
+  return new Date(b.date) - new Date(a.date)
+}
+
 export default async function handler(req, res) {
     try {
     if (req.method !== 'POST') {
@@ -87,9 +91,10 @@ export default async function handler(req, res) {
     return res.status(200).json({
       totalRewards,
       averageRewardsPerDay,
-      rewardsByDate,
-      rewardsWithTxHash
+      rewardsByDate: rewardsByDate.sort(sortByDate),
+      rewardsWithTxHash: rewardsWithTxHash.sort(sortByDate)
     });
+
   } catch (error) {
     return res.status(404).json({
       error: {

@@ -2,9 +2,10 @@
 
 A simple web application to check how much BUSD you have earned so far by holding RC tokens.
 
-Retrocade is Play-2-Earn Arcade Plataform on [Binance Smart Chain](https://www.binance.org/en/smartChain). By holding RC tokens, you can play old school games, take part in competitions and earn BUSD passively.
+Retrocade is Play-2-Earn Arcade Plataform on [Binance Smart Chain](https://www.binance.org/en/smartChain).  
+By holding RC tokens, you can play old school games, take part in competitions and earn BUSD passively.
 
-Demo: 
+Demo: https://retrocade-earnings-checker.vercel.app
 
 Retrocade: https://www.retrocadep2e.com/
 

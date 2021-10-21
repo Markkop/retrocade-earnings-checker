@@ -28,7 +28,7 @@ function Home({ address }) {
   useEffect(() => {
     getRewards(address).then(rewards => {
       
-      if (!rewards) return
+      if (!rewards.totalRewards) return
       setRewards(rewards)
     })
   }, []);

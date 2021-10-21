@@ -60,7 +60,7 @@ function Home({ address }) {
 
       <header className={styles.header}>
         <h1 className={styles.title}>
-          Retrocade Earnings Checker
+          <a href="https://www.retrocadep2e.com/" rel="noopener noreferrer" target="_blank">Retrocade</a> Earnings Checker
         </h1>
       </header>
 

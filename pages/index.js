@@ -46,7 +46,7 @@ function Home({ address }) {
       <Head>
         <title>Unofficial Retrocade Earnings Checker</title>
         <meta name="description" content="Check how much BUSD you've earned by holding RC tokens" />
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/favicon.svg" />
       </Head>
 
       <header className={styles.header}>

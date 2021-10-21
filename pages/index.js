@@ -1,4 +1,5 @@
 import Head from 'next/head'
+import GithubCorner from 'react-github-corner';
 import styles from '../styles/Home.module.css'
 import { useState, useEffect } from 'react';
 
@@ -43,6 +44,11 @@ function Home({ address }) {
 
   return (
     <div className={styles.home}>
+      <GithubCorner 
+        href="https://github.com/Markkop/retrocade-earnings-checker"
+        octoColor="#151513"
+        bannerColor="#cd44b3"
+      />
       <Head>
         <title>Unofficial Retrocade Earnings Checker</title>
         <meta name="description" content="Check how much BUSD you've earned by holding RC tokens" />

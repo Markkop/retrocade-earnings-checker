@@ -87,6 +87,8 @@ function Home({ address }) {
                   <a
                     className={styles.txLink}
                     href={`https://bscscan.com/tx/${reward.txHash}`}
+                    rel="noopener noreferrer"
+                    target="_blank"
                     >
                     {`${reward.date} | ${formatBUSD(reward.amount)}`}
                   </a>

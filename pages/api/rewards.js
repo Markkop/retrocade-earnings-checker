@@ -74,21 +74,19 @@ export default async function handler(req, res) {
     }, [])
 
 
-    const rewards = rewardsByDate.reduce((rewards, rewardDate, index) => {
-      const totalRewards = rewards.totalRewards + rewardDate.amount
-      const averageRewards = totalRewards / index + 1
-      return {
-        totalRewards,
-        averageRewards
-      }
-    }, {
-      totalRewards: 0,
-      averageRewards: 0,
-    })
+    const totalRewards = rewardsByDate.reduce((rewards, rewardDate) => {
+      return rewards + rewardDate.amount
+    }, 0)
+
+    const firstDate = new Date(rewardsByDate[0].date)
+    const lastDate = new Date(rewardsByDate[rewardsByDate.length - 1].date)
+    const diffTime = Number(lastDate) - Number(firstDate)
+    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24))
+    const averageRewardsPerDay = totalRewards / diffDays
 
     return res.status(200).json({
-      totalRewards: rewards.totalRewards,
-      averageRewardsPerDay: rewards.averageRewards,
+      totalRewards,
+      averageRewardsPerDay,
       rewardsByDate,
       rewardsWithTxHash
     });

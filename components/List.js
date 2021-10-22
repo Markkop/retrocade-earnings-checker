@@ -13,6 +13,13 @@ const List = styled.ul`
   li {
     padding-top: 3px;
   }
+
+  @media screen and (max-width: 768px) {
+    margin-left: 5px;
+    margin-top: 10px;
+    height: 200px;
+    font-size: 6px;
+  }
 `
 
 export default List

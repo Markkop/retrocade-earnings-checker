@@ -8,6 +8,13 @@ const WidgetBase = styled.div`
   padding: 10px;
   border-radius: 10px;
   text-align: center;
+
+  @media screen and (max-width: 768px) {
+    width: auto;
+    margin: 10px 10px;
+    padding: 10px 5px;
+    font-size: 12px;
+  }
 ` 
 
 export default function Widget({ title, children, className }) {

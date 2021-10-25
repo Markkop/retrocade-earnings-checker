@@ -8,6 +8,13 @@ const Input = styled.input`
   width: 100%;
 `
 
+const SubText = styled.p`
+  margin-top: 10px;
+  font-size: 12px;
+`
+
+const contract = process.env.CONTRACT_ADDRESS
+
 export function AddressForm({ setInputAddress }) {
   return (
     <Form>
@@ -16,6 +23,9 @@ export function AddressForm({ setInputAddress }) {
         type="text"
         onChange={e => setInputAddress(e.target.value)}  
       />
+      <SubText>
+        or try an address from a <a rel="noopener noreferrer" target="_blank" href={`https://bscscan.com/token/${contract}#balances`}>holder</a>
+      </SubText>
     </Form>
   )
 }

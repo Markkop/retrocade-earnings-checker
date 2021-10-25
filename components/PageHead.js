@@ -9,7 +9,7 @@ export default function PageHead() {
     <Head>
       <title>{title}</title>
       <meta name="description" content={description} />
-      <link rel="icon" href="/favicon.svg" />
+      <link rel="icon" href="/favicon.png" />
       <meta property="og:image" content={ogImage}/>
       <meta property="og:title" content={title}/>
       <meta property="og:description" content={description}/>

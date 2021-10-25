@@ -27,6 +27,7 @@ export function sumAmounts(transactions) {
 }
 
 export function getAverageAmountPerDay(transactions, totalAmount) {
+  if (!transactions[0]) return totalAmount
   const firstDate = new Date(transactions[0].date)
   const lastDate = new Date(transactions[transactions.length - 1].date)
   const diffTime = Number(lastDate) - Number(firstDate)
@@ -35,5 +36,6 @@ export function getAverageAmountPerDay(transactions, totalAmount) {
 }
 
 export function sortByDate(a, b) {
+  if (!a.date || !b.date) return 0
   return new Date(b.date) - new Date(a.date)
 }

@@ -14,23 +14,29 @@ import { formatBUSD } from '../helpers/format'
 import { getRewards } from '../helpers/api'
 import { updateURLQueryStrings } from '../helpers/browser';
 
+const defaultRewards = {
+  totalRewards: 0,
+  averageRewardsPerDay: 0,
+  rewardsByDate: [],
+  transactions: [],
+  tokensHold: 0
+}
+
 function Home({ queryAddress }) {
   const [inputAddress, setInputAddress] = useState('')
-  const [rewards, setRewards] = useState({
-    totalRewards: 0,
-    averageRewardsPerDay: 0,
-    rewardsByDate: [],
-    transactions: [] 
-  });
+  const [rewards, setRewards] = useState(defaultRewards);
 
   function updateRewads(address) {
-    getRewards(address).then(rewards => rewards.totalRewards && setRewards(rewards))
+    getRewards(address).then(rewards => rewards.tokensHold ? setRewards(rewards) : setRewards(defaultRewards))
   }
 
   useEffect(() => {
     const address = inputAddress.trim() || queryAddress
     const isValidEthAddress = /^0x[a-fA-F0-9]{40}$/.test(address)
-    if (!isValidEthAddress) return
+    if (!isValidEthAddress) {
+      setRewards(defaultRewards)
+      return
+    }
     updateURLQueryStrings(address)
     updateRewads(address)
   }, [inputAddress]);
@@ -51,6 +57,10 @@ function Home({ queryAddress }) {
           setInputAddress={setInputAddress}
         />
       </WalletWidget>
+
+      <Widget title='Tokens hold'>
+        <p>{`${rewards.tokensHold.toLocaleString()} RC`}</p>
+      </Widget>
  
       <Main>
         <WidgetContainer>

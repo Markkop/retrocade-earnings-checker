@@ -4,7 +4,7 @@ const WidgetBase = styled.div`
   background-color: #cd44b3;
   border: 2px solid black;
   width: 300px;
-  margin: 30px auto;
+  margin: 10px auto 10px auto;;
   padding: 10px;
   border-radius: 10px;
   text-align: center;

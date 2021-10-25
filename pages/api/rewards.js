@@ -1,5 +1,5 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import { queryRewardTransactions } from "../../helpers/api";
+import { queryRewards } from "../../helpers/api";
 import { 
   getAverageAmountPerDay, 
   mapTransactions, 
@@ -30,25 +30,27 @@ export default async function handler(req, res) {
       })
     }
 
-    const rawTransactions = await queryRewardTransactions(address)
-    if (!rawTransactions.length) {
-      return res.status(404).json({
-        error: {
-          code: 'not_found',
-          message: 'Transactions not found for this address'
-        }
-      })
-    }
+    const { transfers: rawTransactions, address: receiverData } = await queryRewards(address)
+    // if (!rawTransactions.length) {
+    //   return res.status(404).json({
+    //     error: {
+    //       code: 'not_found',
+    //       message: 'Transactions not found for this address'
+    //     }
+    //   })
+    // }
     const transactions = mapTransactions(rawTransactions)
     const rewardsByDate = reduceRewardsByDate(transactions)
     const totalRewards = sumAmounts(transactions)
     const averageRewardsPerDay = getAverageAmountPerDay(transactions, totalRewards)
+    const tokensHold = receiverData[0].balances[0].value
 
     return res.status(200).json({
       totalRewards,
       averageRewardsPerDay,
       rewardsByDate: rewardsByDate.sort(sortByDate),
-      transactions: transactions.sort(sortByDate)
+      transactions: transactions.sort(sortByDate),
+      tokensHold
     });
 
   } catch (error) {

@@ -13,7 +13,8 @@ while holding RC tokens, you can play old school games, take part in competition
 
 Web App: https://retrocade-earnings-checker.vercel.app
 
-![Retrocade Earnings Checker](https://user-images.githubusercontent.com/16388408/138349218-4c25a8dd-55f2-4d5e-98dc-1804c3a96de3.png)
+![Retrocade Earnings Checker](https://user-images.githubusercontent.com/16388408/138710694-e7f74d18-4731-4a15-9833-4859491d5e35.png)
+(the address in the image is just an example taken randomly from the token holders)
 
 ## How it works
 

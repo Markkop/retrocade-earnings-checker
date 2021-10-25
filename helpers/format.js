@@ -1,5 +1,5 @@
 export function formatBUSD(amount) {
-  return `+ $${amount.toFixed(2)} BUSD`
+  return `+ $${amount.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})} BUSD`
 }
 
 export function formatDateAndAmount(date, amount) {

@@ -43,7 +43,7 @@ export default async function handler(req, res) {
     const rewardsByDate = reduceRewardsByDate(transactions)
     const totalRewards = sumAmounts(transactions)
     const averageRewardsPerDay = getAverageAmountPerDay(transactions, totalRewards)
-    const tokensHold = receiverData[0].balances[0].value
+    const tokensHold = (receiverData[0].balances.length && receiverData[0].balances[0]).value || 0
 
     return res.status(200).json({
       totalRewards,

@@ -27,7 +27,7 @@ function Home({ queryAddress }) {
   const [rewards, setRewards] = useState(defaultRewards);
 
   function updateRewads(address) {
-    getRewards(address).then(rewards => rewards.tokensHold ? setRewards(rewards) : setRewards(defaultRewards))
+    getRewards(address).then(rewards => rewards.error ? setRewards(defaultRewards) : setRewards(rewards))
   }
 
   useEffect(() => {

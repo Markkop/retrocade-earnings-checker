@@ -20,7 +20,6 @@ export default async function handler(req, res) {
     }
     
     const { address } = JSON.parse(req.body)
-
     if (!address) {
       return res.status(400).json({
         error: {
@@ -31,14 +30,6 @@ export default async function handler(req, res) {
     }
 
     const { transfers: rawTransactions, address: receiverData } = await queryRewards(address)
-    // if (!rawTransactions.length) {
-    //   return res.status(404).json({
-    //     error: {
-    //       code: 'not_found',
-    //       message: 'Transactions not found for this address'
-    //     }
-    //   })
-    // }
     const transactions = mapTransactions(rawTransactions)
     const rewardsByDate = reduceRewardsByDate(transactions)
     const totalRewards = sumAmounts(transactions)

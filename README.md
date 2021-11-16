@@ -1,4 +1,4 @@
-# 🕹️ Retrocade Earnings Checker
+# 🕹️ Retrocade Rewards Tracker
 
 [![https://img.shields.io/badge/made%20with-nextjs-blue](https://img.shields.io/badge/made%20with-nextjs-blue)](https://reactjs.org/)
 [![https://img.shields.io/badge/made%20with-reactjs-blue](https://img.shields.io/badge/made%20with-reactjs-blue)](https://nextjs.org/)
@@ -11,9 +11,9 @@ while holding RC tokens, you can play old school games, take part in competition
 
 ## Demo
 
-Web App: https://retrocade-earnings-checker.vercel.app
+Web App: https://retrocade-rewards-tracker.vercel.app/
 
-![Retrocade Earnings Checker](https://user-images.githubusercontent.com/16388408/138710694-e7f74d18-4731-4a15-9833-4859491d5e35.png)
+![Retrocade Rewards Tracker](https://user-images.githubusercontent.com/16388408/138710694-e7f74d18-4731-4a15-9833-4859491d5e35.png)
 (the address in the image is just an example taken randomly from the token holders)
 
 ## How it works

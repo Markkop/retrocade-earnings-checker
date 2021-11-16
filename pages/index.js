@@ -9,19 +9,20 @@ import WidgetContainer from '../components/WidgetContainer';
 import TransactionsList from '../components/TransactionsList';
 import RewardsList from '../components/RewardsList';
 import HomePage from '../components/HomePage';
-import Main from '../components/Main';
+import Section from '../components/Section';
 import { formatBUSD } from '../helpers/format'
 import { getRewards } from '../helpers/api'
 import { updateURLQueryStrings } from '../helpers/browser';
 
 const defaultRewards = {
-  totalRewards: 0,
-  averageRewardsPerDay: 0,
-  rewardsByDate: [],
-  transactions: [],
+  totalPassiveRewards: 0,
+  totalP2ERewards: 0,
+  averagePassiveRewardsPerDay: 0,
+  passiveRewardsByDate: [],
+  passiveTransactions: [],
+  p2eTransactions: [],
   tokensHold: 0
 }
-
 function Home({ queryAddress }) {
   const [inputAddress, setInputAddress] = useState('')
   const [rewards, setRewards] = useState(defaultRewards);
@@ -58,31 +59,43 @@ function Home({ queryAddress }) {
         />
       </WalletWidget>
 
-      <Widget title='Tokens hold'>
+      <Widget title='Tokens held'>
         <p>{`${rewards.tokensHold.toLocaleString()} RC`}</p>
       </Widget>
  
-      <Main>
+      <Section>
         <WidgetContainer>
-          <Widget title="Total Rewards">
-            <p>{formatBUSD(rewards.totalRewards)}</p>
+          <Widget title="Total Passive Rewards">
+            <p>{formatBUSD(rewards.totalPassiveRewards)}</p>
           </Widget>
 
-          <Widget title="Transactions">
-            <TransactionsList list={rewards.transactions}/>
+          <Widget title="Passive Rewards Transactions">
+            <TransactionsList list={rewards.passiveTransactions}/>
           </Widget>
         </WidgetContainer>
 
         <WidgetContainer>
           <Widget title="Average passive income">
-            <p>{`${formatBUSD(rewards.averageRewardsPerDay)}/day`}</p>
+            <p>{`${formatBUSD(rewards.averagePassiveRewardsPerDay)}/day`}</p>
           </Widget>
 
-          <Widget title="Rewards by Date">
-            <RewardsList list={rewards.rewardsByDate}/>
+          <Widget title="Passive Rewards by Date">
+            <RewardsList list={rewards.passiveRewardsByDate}/>
           </Widget>
         </WidgetContainer>
-      </Main>
+      </Section>
+
+      <Section>
+        <WidgetContainer>
+          <Widget title="Total P2E Rewards">
+            <p>{formatBUSD(rewards.totalP2ERewards)}</p>
+          </Widget>
+
+          <Widget title="P2E Rewards Transactions">
+            <TransactionsList list={rewards.p2eTransactions}/>
+          </Widget>
+        </WidgetContainer>
+      </Section>
     </HomePage>
   )
 }

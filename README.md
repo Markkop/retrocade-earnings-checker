@@ -18,4 +18,4 @@ Web App: https://retrocade-earnings-checker.vercel.app
 
 ## How it works
 
-The application makes a GraphQL query to [BitQuery](https://bitquery.io) to retrieve the transaction data on BSC related to Retrocade Rewards deployer and the provided eth address.  
+The application makes a GraphQL query to [BitQuery](https://bitquery.io) to retrieve the transaction data on BSC related to Retrocade Rewards deployer and the provided eth address.   

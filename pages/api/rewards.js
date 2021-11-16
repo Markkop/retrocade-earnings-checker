@@ -29,18 +29,22 @@ export default async function handler(req, res) {
       })
     }
 
-    const { transfers: rawTransactions, address: receiverData } = await queryRewards(address)
-    const transactions = mapTransactions(rawTransactions)
-    const rewardsByDate = reduceRewardsByDate(transactions)
-    const totalRewards = sumAmounts(transactions)
-    const averageRewardsPerDay = getAverageAmountPerDay(transactions, totalRewards)
+    const { p2eTransfers, passiveTransfers, address: receiverData } = await queryRewards(address)
+    const passiveTransactions = mapTransactions(passiveTransfers)
+    const p2eTransactions = mapTransactions(p2eTransfers)
+    const passiveRewardsByDate = reduceRewardsByDate(passiveTransactions)
+    const totalPassiveRewards = sumAmounts(passiveTransactions)
+    const totalP2ERewards = sumAmounts(p2eTransactions)
+    const averagePassiveRewardsPerDay = getAverageAmountPerDay(passiveTransactions, totalPassiveRewards)
     const tokensHold = (receiverData[0].balances.length && receiverData[0].balances[0]).value || 0
 
     return res.status(200).json({
-      totalRewards,
-      averageRewardsPerDay,
-      rewardsByDate: rewardsByDate.sort(sortByDate),
-      transactions: transactions.sort(sortByDate),
+      totalPassiveRewards,
+      totalP2ERewards,
+      averagePassiveRewardsPerDay,
+      passiveRewardsByDate: passiveRewardsByDate.sort(sortByDate),
+      passiveTransactions: passiveTransactions.sort(sortByDate),
+      p2eTransactions: p2eTransactions.sort(sortByDate),
       tokensHold
     });
 

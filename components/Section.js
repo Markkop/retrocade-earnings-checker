@@ -1,8 +1,8 @@
 import styled from 'styled-components'
 
-const Main = styled.main`
+const Section = styled.section`
   display: flex;
   justify-content: center;
 `
 
-export default Main
+export default Section

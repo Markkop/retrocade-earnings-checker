@@ -14,7 +14,7 @@ export default function Header() {
   return (
     <HeaderBase>
       <HeaderTitle>
-        <a href="https://www.retrocadep2e.com/" rel="noopener noreferrer" target="_blank">Retrocade</a> Earnings Checker
+        <a href="https://www.retrocadep2e.com/" rel="noopener noreferrer" target="_blank">Retrocade</a> Rewards Tracker
       </HeaderTitle>
     </HeaderBase>
   )

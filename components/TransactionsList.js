@@ -2,7 +2,7 @@ import AnchoredListItem from "./AnchoredListItem";
 import List from "./List";
 import { formatDateAndAmount } from '../helpers/format'
 
-export default function TransactionsList({ list }) {
+export default function TransactionsList({ list, currency }) {
   return (
     <List>
       {list.map(({ date, amount, txHash }) => (
@@ -10,7 +10,7 @@ export default function TransactionsList({ list }) {
           href={`https://bscscan.com/tx/${txHash}`}
           key={txHash}
         >
-          {formatDateAndAmount(date, amount)}
+          {formatDateAndAmount(date, amount, currency)}
         </AnchoredListItem>
       ))}
     </List>

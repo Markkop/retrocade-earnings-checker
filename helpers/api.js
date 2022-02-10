@@ -19,10 +19,11 @@ export async function queryRewards(receiverAddress) {
         "network": "bsc",
         "sender": process.env.SENDER_ADDRESS,
         "receiver": receiverAddress,
-        "contract": process.env.CONTRACT_ADDRESS,
         "p2eSender": process.env.P2E_SENDER_ADDRESS,
+        "newContract": process.env.NEW_CONTRACT_ADDRESS,
+        "stakingSender": process.env.STAKING_SENDER_ADDRESS,
       },
-      query: gql`query ($network: EthereumNetwork!, $sender: String!, $p2eSender: String!, $receiver: String!, $contract: String! ) {
+      query: gql`query ($network: EthereumNetwork!, $sender: String!, $p2eSender: String!, $receiver: String!, $newContract: String!, $stakingSender: String! ) {
         ethereum(network: $network) {
           p2eTransfers: transfers(
             sender: {is: $p2eSender}
@@ -54,12 +55,36 @@ export async function queryRewards(receiverAddress) {
               hash
             }
           }
+          stakingContractTransfers: transfers(
+            sender: {is: $stakingSender}
+            receiver: {is: $receiver}
+          ) {
+            currency {
+              name
+            }
+            date {
+              date
+            }
+            amount(calculate: maximum)
+            transaction {
+              hash
+            }
+          }
           address(address: {is: $receiver}) {
-            balances(currency: {is: $contract}) {
+            balances(currency: {is: $newContract}) {
               value
               currency {
                 name
               }
+            }
+          }
+          harvestCalls: smartContractCalls(
+            smartContractMethod: {is: "harvestForUser"}
+            smartContractAddress: {is: $stakingSender}
+            caller: {is: $receiver}
+          ) {
+            transaction {
+              hash
             }
           }
         }

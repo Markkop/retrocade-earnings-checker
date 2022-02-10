@@ -29,13 +29,19 @@ export default async function handler(req, res) {
       })
     }
 
-    const { p2eTransfers, passiveTransfers, address: receiverData } = await queryRewards(address)
+    const { p2eTransfers, passiveTransfers, stakingContractTransfers, harvestCalls, address: receiverData } = await queryRewards(address)
     const passiveTransactions = mapTransactions(passiveTransfers)
     const p2eTransactions = mapTransactions(p2eTransfers)
-    const passiveRewardsByDate = reduceRewardsByDate(passiveTransactions)
     const totalPassiveRewards = sumAmounts(passiveTransactions)
     const totalP2ERewards = sumAmounts(p2eTransactions)
+    
+    const harvestTransfers = stakingContractTransfers.filter(tx => harvestCalls.some(call => call.transaction.hash === tx.transaction.hash))
+    const harvestTransactions = mapTransactions(harvestTransfers)
+    const totalHarvested = sumAmounts(harvestTransfers)
+
+    const passiveRewardsByDate = reduceRewardsByDate(passiveTransactions)
     const averagePassiveRewardsPerDay = getAverageAmountPerDay(passiveTransactions, totalPassiveRewards)
+
     const tokensHold = (receiverData[0].balances.length && receiverData[0].balances[0]).value || 0
 
     return res.status(200).json({
@@ -45,7 +51,9 @@ export default async function handler(req, res) {
       passiveRewardsByDate: passiveRewardsByDate.sort(sortByDate),
       passiveTransactions: passiveTransactions.sort(sortByDate),
       p2eTransactions: p2eTransactions.sort(sortByDate),
-      tokensHold
+      tokensHold,
+      totalHarvested,
+      harvestTransactions
     });
 
   } catch (error) {

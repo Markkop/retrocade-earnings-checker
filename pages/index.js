@@ -10,7 +10,7 @@ import TransactionsList from '../components/TransactionsList';
 import RewardsList from '../components/RewardsList';
 import HomePage from '../components/HomePage';
 import Section from '../components/Section';
-import { formatBUSD } from '../helpers/format'
+import { formatCurrency } from '../helpers/format'
 import { getRewards } from '../helpers/api'
 import { updateURLQueryStrings } from '../helpers/browser';
 
@@ -21,7 +21,9 @@ const defaultRewards = {
   passiveRewardsByDate: [],
   passiveTransactions: [],
   p2eTransactions: [],
-  tokensHold: 0
+  tokensHold: 0,
+  totalHarvested: [],
+  harvestTransactions: []
 }
 function Home({ queryAddress }) {
   const [inputAddress, setInputAddress] = useState('')
@@ -65,22 +67,22 @@ function Home({ queryAddress }) {
  
       <Section>
         <WidgetContainer>
-          <Widget title="Total Passive Rewards">
-            <p>{formatBUSD(rewards.totalPassiveRewards)}</p>
+          <Widget title="Rewards From Old Contract">
+            <p>{formatCurrency(rewards.totalPassiveRewards)}</p>
           </Widget>
 
-          <Widget title="Passive Rewards Transactions">
+          <Widget title="Rewards Txs From Old Contract">
             <TransactionsList list={rewards.passiveTransactions}/>
           </Widget>
         </WidgetContainer>
 
         <WidgetContainer>
-          <Widget title="Average passive income">
-            <p>{`${formatBUSD(rewards.averagePassiveRewardsPerDay)}/day`}</p>
+          <Widget title="Total harvested from staking">
+            <p>{`${rewards.totalHarvested.toLocaleString()} RC`}</p>
           </Widget>
 
-          <Widget title="Passive Rewards by Date">
-            <RewardsList list={rewards.passiveRewardsByDate}/>
+          <Widget title="Harvest Transactions">
+            <TransactionsList list={rewards.harvestTransactions} currency='RC'/>
           </Widget>
         </WidgetContainer>
       </Section>
@@ -88,7 +90,7 @@ function Home({ queryAddress }) {
       <Section>
         <WidgetContainer>
           <Widget title="Total P2E Rewards">
-            <p>{formatBUSD(rewards.totalP2ERewards)}</p>
+            <p>{formatCurrency(rewards.totalP2ERewards)}</p>
           </Widget>
 
           <Widget title="P2E Rewards Transactions">

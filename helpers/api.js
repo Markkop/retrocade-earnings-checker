@@ -1,5 +1,6 @@
 
 import { gql } from "@apollo/client";
+import axios from "axios";
 import client from "../apollo-client";
 
 export async function getRewards(address) {
@@ -7,6 +8,16 @@ export async function getRewards(address) {
     method: 'POST',
     body: JSON.stringify({
       address
+    })
+  });
+  return response.json();
+}
+
+export async function getPrice(slug) {
+  const response = await fetch('/api/price', {
+    method: 'POST',
+    body: JSON.stringify({
+      slug
     })
   });
   return response.json();
@@ -97,4 +108,15 @@ export async function queryRewards(receiverAddress) {
     throw new Error(error)
   }
   
+}
+
+export async function getTokenPrice(slug) {
+    const url = "https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest?slug=" + slug
+    const options = {
+        headers: {
+            "X-CMC_PRO_API_KEY": process.env.CMC_API_KEY
+        }
+    }
+    const { data } = await axios(url, options)
+    return data.data[Object.keys(data.data)[0]].quote.USD.price
 }

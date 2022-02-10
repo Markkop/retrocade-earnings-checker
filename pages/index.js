@@ -11,7 +11,7 @@ import RewardsList from '../components/RewardsList';
 import HomePage from '../components/HomePage';
 import Section from '../components/Section';
 import { formatCurrency } from '../helpers/format'
-import { getRewards } from '../helpers/api'
+import { getPrice, getRewards } from '../helpers/api'
 import { updateURLQueryStrings } from '../helpers/browser';
 
 const defaultRewards = {
@@ -28,9 +28,14 @@ const defaultRewards = {
 function Home({ queryAddress }) {
   const [inputAddress, setInputAddress] = useState('')
   const [rewards, setRewards] = useState(defaultRewards);
+  const [price, setPrice] = useState(0);
 
   function updateRewads(address) {
     getRewards(address).then(rewards => rewards.error ? setRewards(defaultRewards) : setRewards(rewards))
+  }
+
+  function updatPrice() {
+    getPrice('retrocade').then(priceResponse => priceResponse.error ? setPrice(0) : setPrice(priceResponse.price))
   }
 
   useEffect(() => {
@@ -40,10 +45,11 @@ function Home({ queryAddress }) {
       setRewards(defaultRewards)
       return
     }
+    updatPrice()
     updateURLQueryStrings(address)
     updateRewads(address)
   }, [inputAddress]);
-
+console.log(rewards.totalHarvested)
   return (
     <HomePage>
       <GithubCorner 
@@ -78,7 +84,7 @@ function Home({ queryAddress }) {
 
         <WidgetContainer>
           <Widget title="Total harvested from staking">
-            <p>{`${rewards.totalHarvested.toLocaleString()} RC`}</p>
+            <p>{`${rewards.totalHarvested.toLocaleString()} RC (~ $${(price * rewards.totalHarvested).toLocaleString() } USD)`}</p>
           </Widget>
 
           <Widget title="Harvest Transactions">

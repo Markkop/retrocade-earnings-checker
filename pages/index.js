@@ -67,24 +67,21 @@ console.log(rewards.totalHarvested)
         />
       </WalletWidget>
 
-      <Widget title='Tokens held'>
-        <p>{`${rewards.tokensHold.toLocaleString()} RC`}</p>
-      </Widget>
- 
       <Section>
-        <WidgetContainer>
-          <Widget title="Rewards From Old Contract">
-            <p>{formatCurrency(rewards.totalPassiveRewards)}</p>
+
+      <WidgetContainer>
+          <Widget title="Total P2E Rewards">
+            <p>{formatCurrency(rewards.totalP2ERewards, "BUSD")}</p>
           </Widget>
 
-          <Widget title="Rewards Txs From Old Contract">
-            <TransactionsList list={rewards.passiveTransactions}/>
+          <Widget title="P2E Rewards Transactions">
+            <TransactionsList list={rewards.p2eTransactions} currency="BUSD"/>
           </Widget>
         </WidgetContainer>
 
         <WidgetContainer>
           <Widget title="Total harvested from staking">
-            <p>{`${rewards.totalHarvested.toLocaleString()} RC (~ $${(price * rewards.totalHarvested).toLocaleString() } USD)`}</p>
+            <p>{`${rewards.totalHarvested.toLocaleString()} RC (~${formatCurrency(price * rewards.totalHarvested) } USD)`}</p>
           </Widget>
 
           <Widget title="Harvest Transactions">
@@ -93,17 +90,18 @@ console.log(rewards.totalHarvested)
         </WidgetContainer>
       </Section>
 
+      {Boolean(rewards.passiveTransactions.length) && 
       <Section>
         <WidgetContainer>
-          <Widget title="Total P2E Rewards">
-            <p>{formatCurrency(rewards.totalP2ERewards)}</p>
+          <Widget title="Rewards From Old Contract">
+            <p>{formatCurrency(rewards.totalPassiveRewards, "BUSD")}</p>
           </Widget>
 
-          <Widget title="P2E Rewards Transactions">
-            <TransactionsList list={rewards.p2eTransactions}/>
+          <Widget title="Rewards Txs From Old Contract">
+            <TransactionsList list={rewards.passiveTransactions} currency="BUSD"/>
           </Widget>
         </WidgetContainer>
-      </Section>
+      </Section>}
     </HomePage>
   )
 }

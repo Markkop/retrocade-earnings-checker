@@ -8,7 +8,7 @@ const Anchor = styled.a`
   text-align: left;
 `
 
-export default function AnchoredListItem({ href, children}) {
+export default function AnchoredListItem({ href, children }) {
   return (
     <ListItem>
       <Anchor

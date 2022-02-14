@@ -42,7 +42,8 @@ export default async function handler(req, res) {
     const passiveRewardsByDate = reduceRewardsByDate(passiveTransactions)
     const averagePassiveRewardsPerDay = getAverageAmountPerDay(passiveTransactions, totalPassiveRewards)
 
-    const tokensHold = (receiverData[0].balances.length && receiverData[0].balances[0]).value || 0
+    const balance = (receiverData[0] && receiverData[0].balances && receiverData[0].balances[0]) | {}
+    const tokensHold = balance.value || 0
 
     return res.status(200).json({
       totalPassiveRewards,

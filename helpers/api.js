@@ -110,13 +110,8 @@ export async function queryRewards(receiverAddress) {
   
 }
 
-export async function getTokenPrice(slug) {
-    const url = "https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest?slug=" + slug
-    const options = {
-        headers: {
-            "X-CMC_PRO_API_KEY": process.env.CMC_API_KEY
-        }
-    }
-    const { data } = await axios(url, options)
-    return data.data[Object.keys(data.data)[0]].quote.USD.price
+export async function getTokenPrice(address) {
+    const url = `https://api.pancakeswap.info/api/v2/tokens/${address}`
+    const { data } = await axios(url)
+    return data.data.price
 }

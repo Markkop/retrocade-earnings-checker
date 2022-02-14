@@ -1,5 +1,6 @@
 
 import { gql } from "@apollo/client";
+import axios from "axios";
 import client from "../apollo-client";
 
 export async function getRewards(address) {
@@ -12,6 +13,16 @@ export async function getRewards(address) {
   return response.json();
 }
 
+export async function getPrice(slug) {
+  const response = await fetch('/api/price', {
+    method: 'POST',
+    body: JSON.stringify({
+      slug
+    })
+  });
+  return response.json();
+}
+
 export async function queryRewards(receiverAddress) {
   try {
     const { data } = await client.query({
@@ -19,10 +30,11 @@ export async function queryRewards(receiverAddress) {
         "network": "bsc",
         "sender": process.env.SENDER_ADDRESS,
         "receiver": receiverAddress,
-        "contract": process.env.CONTRACT_ADDRESS,
         "p2eSender": process.env.P2E_SENDER_ADDRESS,
+        "newContract": process.env.NEW_CONTRACT_ADDRESS,
+        "stakingSender": process.env.STAKING_SENDER_ADDRESS,
       },
-      query: gql`query ($network: EthereumNetwork!, $sender: String!, $p2eSender: String!, $receiver: String!, $contract: String! ) {
+      query: gql`query ($network: EthereumNetwork!, $sender: String!, $p2eSender: String!, $receiver: String!, $newContract: String!, $stakingSender: String! ) {
         ethereum(network: $network) {
           p2eTransfers: transfers(
             sender: {is: $p2eSender}
@@ -54,12 +66,36 @@ export async function queryRewards(receiverAddress) {
               hash
             }
           }
+          stakingContractTransfers: transfers(
+            sender: {is: $stakingSender}
+            receiver: {is: $receiver}
+          ) {
+            currency {
+              name
+            }
+            date {
+              date
+            }
+            amount(calculate: maximum)
+            transaction {
+              hash
+            }
+          }
           address(address: {is: $receiver}) {
-            balances(currency: {is: $contract}) {
+            balances(currency: {is: $newContract}) {
               value
               currency {
                 name
               }
+            }
+          }
+          harvestCalls: smartContractCalls(
+            smartContractMethod: {is: "harvestForUser"}
+            smartContractAddress: {is: $stakingSender}
+            caller: {is: $receiver}
+          ) {
+            transaction {
+              hash
             }
           }
         }
@@ -72,4 +108,10 @@ export async function queryRewards(receiverAddress) {
     throw new Error(error)
   }
   
+}
+
+export async function getTokenPrice(address) {
+    const url = `https://api.pancakeswap.info/api/v2/tokens/${address}`
+    const { data } = await axios(url)
+    return data.data.price
 }

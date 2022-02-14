@@ -10,8 +10,8 @@ import TransactionsList from '../components/TransactionsList';
 import RewardsList from '../components/RewardsList';
 import HomePage from '../components/HomePage';
 import Section from '../components/Section';
-import { formatBUSD } from '../helpers/format'
-import { getRewards } from '../helpers/api'
+import { formatCurrency } from '../helpers/format'
+import { getPrice, getRewards } from '../helpers/api'
 import { updateURLQueryStrings } from '../helpers/browser';
 
 const defaultRewards = {
@@ -21,14 +21,21 @@ const defaultRewards = {
   passiveRewardsByDate: [],
   passiveTransactions: [],
   p2eTransactions: [],
-  tokensHold: 0
+  tokensHold: 0,
+  totalHarvested: [],
+  harvestTransactions: []
 }
 function Home({ queryAddress }) {
   const [inputAddress, setInputAddress] = useState('')
   const [rewards, setRewards] = useState(defaultRewards);
+  const [price, setPrice] = useState(0);
 
   function updateRewads(address) {
     getRewards(address).then(rewards => rewards.error ? setRewards(defaultRewards) : setRewards(rewards))
+  }
+
+  function updatPrice() {
+    getPrice('retrocade').then(priceResponse => priceResponse.error ? setPrice(0) : setPrice(priceResponse.price))
   }
 
   useEffect(() => {
@@ -38,10 +45,11 @@ function Home({ queryAddress }) {
       setRewards(defaultRewards)
       return
     }
+    updatPrice()
     updateURLQueryStrings(address)
     updateRewads(address)
   }, [inputAddress]);
-
+console.log(rewards.totalHarvested)
   return (
     <HomePage>
       <GithubCorner 
@@ -59,43 +67,41 @@ function Home({ queryAddress }) {
         />
       </WalletWidget>
 
-      <Widget title='Tokens held'>
-        <p>{`${rewards.tokensHold.toLocaleString()} RC`}</p>
-      </Widget>
- 
       <Section>
-        <WidgetContainer>
-          <Widget title="Total Passive Rewards">
-            <p>{formatBUSD(rewards.totalPassiveRewards)}</p>
-          </Widget>
 
-          <Widget title="Passive Rewards Transactions">
-            <TransactionsList list={rewards.passiveTransactions}/>
-          </Widget>
-        </WidgetContainer>
-
-        <WidgetContainer>
-          <Widget title="Average passive income">
-            <p>{`${formatBUSD(rewards.averagePassiveRewardsPerDay)}/day`}</p>
-          </Widget>
-
-          <Widget title="Passive Rewards by Date">
-            <RewardsList list={rewards.passiveRewardsByDate}/>
-          </Widget>
-        </WidgetContainer>
-      </Section>
-
-      <Section>
-        <WidgetContainer>
+      <WidgetContainer>
           <Widget title="Total P2E Rewards">
-            <p>{formatBUSD(rewards.totalP2ERewards)}</p>
+            <p>{formatCurrency(rewards.totalP2ERewards, "BUSD")}</p>
           </Widget>
 
           <Widget title="P2E Rewards Transactions">
-            <TransactionsList list={rewards.p2eTransactions}/>
+            <TransactionsList list={rewards.p2eTransactions} currency="BUSD"/>
+          </Widget>
+        </WidgetContainer>
+
+        <WidgetContainer>
+          <Widget title="Total harvested from staking">
+            <p>{`${rewards.totalHarvested.toLocaleString()} RC (~${formatCurrency(price * rewards.totalHarvested) } USD)`}</p>
+          </Widget>
+
+          <Widget title="Harvest Transactions">
+            <TransactionsList list={rewards.harvestTransactions} currency='RC'/>
           </Widget>
         </WidgetContainer>
       </Section>
+
+      {Boolean(rewards.passiveTransactions.length) && 
+      <Section>
+        <WidgetContainer>
+          <Widget title="Rewards From Old Contract">
+            <p>{formatCurrency(rewards.totalPassiveRewards, "BUSD")}</p>
+          </Widget>
+
+          <Widget title="Rewards Txs From Old Contract">
+            <TransactionsList list={rewards.passiveTransactions} currency="BUSD"/>
+          </Widget>
+        </WidgetContainer>
+      </Section>}
     </HomePage>
   )
 }

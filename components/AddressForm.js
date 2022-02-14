@@ -13,7 +13,7 @@ const SubText = styled.p`
   font-size: 12px;
 `
 
-const contract = process.env.CONTRACT_ADDRESS
+const contract = process.env.NEW_CONTRACT_ADDRESS
 
 export function AddressForm({ setInputAddress }) {
   return (

@@ -31,13 +31,14 @@ export async function queryRewards(receiverAddress) {
         "sender": process.env.SENDER_ADDRESS,
         "receiver": receiverAddress,
         "p2eSender": process.env.P2E_SENDER_ADDRESS,
+        "p2eSender2": process.env.P2E_SENDER_ADDRESS_2,
         "newContract": process.env.NEW_CONTRACT_ADDRESS,
         "stakingSender": process.env.STAKING_SENDER_ADDRESS,
       },
-      query: gql`query ($network: EthereumNetwork!, $sender: String!, $p2eSender: String!, $receiver: String!, $newContract: String!, $stakingSender: String! ) {
+      query: gql`query ($network: EthereumNetwork!, $sender: String!, $p2eSender: String!, $p2eSender2: String!, $receiver: String!, $newContract: String!, $stakingSender: String! ) {
         ethereum(network: $network) {
           p2eTransfers: transfers(
-            sender: {is: $p2eSender}
+            sender: {in: [$p2eSender, $p2eSender2]}
             receiver: {is: $receiver}
           ) {
             currency {

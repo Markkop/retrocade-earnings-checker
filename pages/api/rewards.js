@@ -5,7 +5,8 @@ import {
   mapTransactions, 
   reduceRewardsByDate, 
   sumAmounts, 
-  sortByDate 
+  sortByDate, 
+  filterTransactionsAfterPaymentsInRC
 } from "../../helpers/parseRewards";
 
 export default async function handler(req, res) {
@@ -32,8 +33,9 @@ export default async function handler(req, res) {
     const { p2eTransfers, passiveTransfers, stakingContractTransfers, harvestCalls, address: receiverData } = await queryRewards(address)
     const passiveTransactions = mapTransactions(passiveTransfers)
     const p2eTransactions = mapTransactions(p2eTransfers)
+    const filteredP2eTransactions = filterTransactionsAfterPaymentsInRC(p2eTransactions)
     const totalPassiveRewards = sumAmounts(passiveTransactions)
-    const totalP2ERewards = sumAmounts(p2eTransactions)
+    const totalP2ERewards = sumAmounts(filteredP2eTransactions)
     
     const harvestTransfers = stakingContractTransfers.filter(tx => harvestCalls.some(call => call.transaction.hash === tx.transaction.hash))
     const harvestTransactions = mapTransactions(harvestTransfers)
@@ -51,7 +53,7 @@ export default async function handler(req, res) {
       averagePassiveRewardsPerDay,
       passiveRewardsByDate: passiveRewardsByDate.sort(sortByDate),
       passiveTransactions: passiveTransactions.sort(sortByDate),
-      p2eTransactions: p2eTransactions.sort(sortByDate),
+      p2eTransactions: filteredP2eTransactions.sort(sortByDate),
       tokensHold,
       totalHarvested,
       harvestTransactions

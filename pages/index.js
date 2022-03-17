@@ -10,9 +10,10 @@ import TransactionsList from '../components/TransactionsList';
 import RewardsList from '../components/RewardsList';
 import HomePage from '../components/HomePage';
 import Section from '../components/Section';
-import { formatCurrency } from '../helpers/format'
+import { formatApproximateCurrencyInDollars, formatCurrency } from '../helpers/format'
 import { getPrice, getRewards } from '../helpers/api'
 import { updateURLQueryStrings } from '../helpers/browser';
+import { sumAmounts } from '../helpers/parseRewards';
 
 const defaultRewards = {
   totalPassiveRewards: 0,
@@ -22,7 +23,7 @@ const defaultRewards = {
   passiveTransactions: [],
   p2eTransactions: [],
   tokensHold: 0,
-  totalHarvested: [],
+  totalHarvested: 0,
   harvestTransactions: []
 }
 function Home({ queryAddress }) {
@@ -48,8 +49,8 @@ function Home({ queryAddress }) {
     updatPrice()
     updateURLQueryStrings(address)
     updateRewads(address)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inputAddress]);
-console.log(rewards.totalHarvested)
   return (
     <HomePage>
       <GithubCorner 
@@ -71,21 +72,21 @@ console.log(rewards.totalHarvested)
 
       <WidgetContainer>
           <Widget title="Total P2E Rewards">
-            <p>{formatCurrency(rewards.totalP2ERewards, "BUSD")}</p>
+            <p>{formatCurrency(sumAmounts(rewards.p2eTransactions, price), 'USD')}</p>
           </Widget>
 
           <Widget title="P2E Rewards Transactions">
-            <TransactionsList list={rewards.p2eTransactions} currency="BUSD"/>
+            <TransactionsList list={rewards.p2eTransactions} price={price}/>
           </Widget>
         </WidgetContainer>
 
         <WidgetContainer>
           <Widget title="Total harvested from staking">
-            <p>{`${rewards.totalHarvested.toLocaleString()} RC (~${formatCurrency(price * rewards.totalHarvested) } USD)`}</p>
+            <p>{`${rewards.totalHarvested.toLocaleString()} RC ${formatApproximateCurrencyInDollars(price, rewards.totalHarvested)}`}</p>
           </Widget>
 
           <Widget title="Harvest Transactions">
-            <TransactionsList list={rewards.harvestTransactions} currency='RC'/>
+            <TransactionsList list={rewards.harvestTransactions} price={price}/>
           </Widget>
         </WidgetContainer>
       </Section>

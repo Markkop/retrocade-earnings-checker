@@ -4,7 +4,7 @@ const List = styled.ul`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  margin-left: 30px;
+  /* margin-left: 30px; */
   margin-top: 10px;
   overflow-y: scroll;
   height: 300px;

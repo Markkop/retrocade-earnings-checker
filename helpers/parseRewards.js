@@ -2,8 +2,18 @@ export function mapTransactions(rawTransactions) {
   return rawTransactions.map(tx => ({
     date: tx.date.date,
     amount: tx.amount,
-    txHash: tx.transaction.hash
+    txHash: tx.transaction.hash,
+    currency: tx.currency.symbol
   }))
+}
+
+export function filterTransactionsAfterPaymentsInRC(mappedTransactons) {
+  const dateSinceRewardsPayedInRC = '2022-03-09'
+  return mappedTransactons.filter(tx => {
+    const isAfterRewardsInRC = new Date(tx.date) - new Date(dateSinceRewardsPayedInRC) > 0
+    const isRC = tx.currency === 'RC'
+    return isRC ? isAfterRewardsInRC : tx
+  })
 }
 
 export function reduceRewardsByDate(transactions) {
@@ -20,8 +30,9 @@ export function reduceRewardsByDate(transactions) {
   }, [])
 }
 
-export function sumAmounts(transactions) {
-  return transactions.reduce((totalAmount, { amount })=> {
+export function sumAmounts(transactions, price = 0) {
+  return transactions.reduce((totalAmount, { amount, currency })=> {
+    if (price && currency === 'RC') return totalAmount + (amount * price)
     return totalAmount + amount
   }, 0)
 }
